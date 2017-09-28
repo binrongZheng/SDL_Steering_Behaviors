@@ -44,7 +44,9 @@ void SceneEvade::update(float dtime, SDL_Event *event)
 		break;
 	}
 	Vector2D steering_force = agents[0]->Behavior()->Arrive(agents[0], agents[0]->getTarget(), 325, dtime);
+	
 	agents[0]->update(steering_force, dtime, event);
+	Vector2D Evade_force;
 	zombies[0]->update(steering_force, dtime, event);
 }
 
