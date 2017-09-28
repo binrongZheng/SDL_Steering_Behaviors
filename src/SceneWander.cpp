@@ -11,8 +11,8 @@ SceneWander::SceneWander()
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agents.push_back(agent);
 	target = Vector2D(640, 360);
-	wanderMaxChange = 50;
-	wanderCircleOffset = 70;
+	maxWanderAngle = 30;
+	wanderCircleOffset = 250;
 	wanderCircleRadius = 80;
 	wanderAngle = 0.0f;
 	wanderCircleCenter = {};
@@ -43,8 +43,9 @@ void SceneWander::update(float dtime, SDL_Event *event)
 		break;
 	}
 	Vector2D velocity = agents[0]->getVelocity();
-	float angle = (float)(atan2(velocity.y, velocity.x));//radians que gira
-	Vector2D steering_force = agents[0]->Behavior()->Wander(agents[0], angle, &wanderAngle, wanderMaxChange, wanderCircleOffset, wanderCircleRadius, dtime);
+	float angle = (float)(atan2(velocity.y, velocity.x));//angle de direccio del pj
+	//NO CRIDAR SEMPRE EL WANDEEEEER
+	Vector2D steering_force = agents[0]->Behavior()->Wander(agents[0], angle, wanderAngle, maxWanderAngle, wanderCircleOffset, wanderCircleRadius, dtime);
 	agents[0]->update(steering_force, dtime, event);
 }
 

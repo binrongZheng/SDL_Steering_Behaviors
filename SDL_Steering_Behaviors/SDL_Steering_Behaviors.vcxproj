@@ -80,6 +80,7 @@
     <OutDir>$(SolutionDir)\bin\</OutDir>
     <IncludePath>$(SolutionDir)lib\SDL2_ttf\include;$(SolutionDir)lib\SDL2_image\include;$(SolutionDir)lib\SDL2\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectName)\$(Configuration)\</IntDir>
+    <LibraryPath>C:\Users\pblanes\IA\Practica1\lib\SDL2_ttf\lib\x86;C:\Users\pblanes\IA\Practica1\lib\SDL2_image\lib\x86;C:\Users\pblanes\IA\Practica1\lib\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>U:\3er GRAU\SDL_Steering_Behaviors\SDL_Steering_Behaviors\lib\SDL2\include;U:\3er GRAU\SDL_Steering_Behaviors\SDL_Steering_Behaviors\lib\SDL2_image\include;U:\3er GRAU\SDL_Steering_Behaviors\SDL_Steering_Behaviors\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>

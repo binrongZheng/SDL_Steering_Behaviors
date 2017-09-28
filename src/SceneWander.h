@@ -17,7 +17,7 @@ private:
 	Vector2D target;
 public:
 	// Wander fields
-	int wanderMaxChange = 50;
+	int maxWanderAngle = 50;
 	int wanderCircleOffset = 80;
 	int wanderCircleRadius = 70;
 	float wanderAngle = 0;
