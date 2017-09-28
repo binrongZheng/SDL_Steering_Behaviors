@@ -129,3 +129,30 @@ Vector2D SteeringBehavior::Wander(Agent *agent, float angle, float wanderAngle, 
 	return Seek(agent, target, dtime);
 }
 
+
+Vector2D SteeringBehavior::Evade(Agent *agent, Vector2D target, float radiArea, float dtime)
+{
+
+	Vector2D dv = target - agent->position;
+	float Factor;
+	float distance = sqrt(dv.x*dv.x + dv.y*dv.y);
+	if (distance > radiArea) {
+		dv.Normalize();
+		dv *= agent->max_velocity;
+	}
+	else {
+
+		dv.Normalize();
+		Factor = distance / radiArea;
+		dv *= agent->max_velocity*Factor;
+	}
+
+	Vector2D sf = dv - agent->velocity;
+	sf /= agent->getMaxVelocity();
+
+	return sf * agent->max_force;
+}
+Vector2D SteeringBehavior::Evade(Agent *agent, Agent *target, float dtime, float radiArea)
+{
+	return Arrive(agent, target->position, dtime, radiArea);
+}

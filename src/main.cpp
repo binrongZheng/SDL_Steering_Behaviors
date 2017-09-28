@@ -10,6 +10,7 @@
 #include "SceneArrival.h"
 #include "SceneWander.h"
 
+#include "SceneEvade.h"
 using namespace std;
 
 int main(int argc, char ** argv)
@@ -66,6 +67,13 @@ int main(int argc, char ** argv)
 			{
 				delete(curr_scene);
 				curr_scene = new SceneWander;
+				app->setWindowTitle(curr_scene->getTitle());
+
+			}
+			if (event.key.keysym.scancode == SDL_SCANCODE_8)
+			{
+				delete(curr_scene);
+				curr_scene = new SceneEvade;
 				app->setWindowTitle(curr_scene->getTitle());
 
 			}
