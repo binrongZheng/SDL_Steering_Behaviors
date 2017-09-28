@@ -1,4 +1,5 @@
 #include "SteeringBehavior.h"
+#include <time.h>
 
 
 
@@ -107,9 +108,18 @@ Vector2D SteeringBehavior::Arrive(Agent *agent, Agent *target, float dtime,float
 {
 	return Arrive(agent, target->position, dtime, radiArea);
 }
-/*
-Vector2D SteeringBehavior::Wander(Agent *agent, float angle, float *wanderAngle, float rawanderMaxChangediArea, float  wanderCircleOffset, float wanderCircleRadius,float dtime)
+
+Vector2D SteeringBehavior::Wander(Agent *agent, float angle, float *wanderAngle, int wanderMaxChangediArea, float  wanderCircleOffset, float wanderCircleRadius,float dtime)
 {
-	//return Wander(agent, target->position, dtime, radiArea);
+	srand(time(NULL));
+	wanderAngle += -wanderMaxChangediArea+rand() % (wanderMaxChangediArea*2);
+	//centre
+	Vector2D c;
+	c.x = wanderCircleOffset*cos(angle);
+	c.y = wanderCircleOffset*sin(angle);
+
+	Vector2D Target;
+	
+	return c;
 }
-*/
+
