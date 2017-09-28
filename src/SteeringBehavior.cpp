@@ -156,3 +156,23 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *target, float dtime, float
 {
 	return Arrive(agent, target->position, dtime, radiArea);
 }
+
+Vector2D SteeringBehavior::Pursue(Agent * agent, Vector2D target, Vector2D targetVelocity, float dtime)
+{
+	float MaxLookAheadTime = 3;								//PER RETOCAR
+
+	Vector2D dv = target - agent->position;					//distance vector
+	float distance = sqrt(dv.x*dv.x + dv.y*dv.y);
+	float velocity = sqrt(targetVelocity.x*targetVelocity.x+ targetVelocity.y*targetVelocity.y);
+	float time = distance / velocity;						//temps que trigarà el target a arrivar al predictedTarget
+	if (time > MaxLookAheadTime)
+		time = MaxLookAheadTime;
+	Vector2D predictedTarget = target + targetVelocity * time;
+	return Seek(agent, predictedTarget, dtime);
+}
+
+Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, Vector2D targetVelocity, float dtime)
+{
+
+	return Vector2D();
+}
