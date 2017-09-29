@@ -15,13 +15,15 @@ public:
 private:
 	std::vector<Agent*> agents;
 	Vector2D target;
+	
 public:
 	// Wander fields
 	int maxWanderAngle = 50;
-	int wanderCircleOffset = 80;
-	int wanderCircleRadius = 70;
-	float wanderAngle = 0;
+	int wanderCircleOffset = 150;
+	int wanderCircleRadius = 250;
+	float* wanderAngle;
 	Vector2D wanderCircleCenter = {};
 	Vector2D wanderDisplacementVector = {};
+	
 };
 
