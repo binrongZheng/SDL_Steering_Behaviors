@@ -130,33 +130,16 @@ Vector2D SteeringBehavior::Wander(Agent *agent, float angle, float wanderAngle, 
 }
 
 
-Vector2D SteeringBehavior::Evade(Agent *agent, Vector2D target, float radiArea, float dtime)
+Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 {
+	Vector2D distance = agent->position - zombie->position;
+	float Ndistance=sqrt(distance.x*distance.x+distance.y*distance.y);
+	float T = Ndistance / agent->max_velocity;
 
-	Vector2D dv = target - agent->position;
-	float Factor;
-	float distance = sqrt(dv.x*dv.x + dv.y*dv.y);
-	if (distance > radiArea) {
-		dv.Normalize();
-		dv *= agent->max_velocity;
-	}
-	else {
+	Vector2D futurePosition = agent->position + agent->velocity*T;
 
-		dv.Normalize();
-		Factor = distance / radiArea;
-		dv *= agent->max_velocity*Factor;
-	}
-
-	Vector2D sf = dv - agent->velocity;
-	sf /= agent->getMaxVelocity();
-
-	return sf * agent->max_force;
+	return Flee(zombie, futurePosition, dtime);
 }
-Vector2D SteeringBehavior::Evade(Agent *agent, Agent *target, float dtime, float radiArea)
-{
-	return Arrive(agent, target->position, dtime, radiArea);
-}
-
 Vector2D SteeringBehavior::Pursue(Agent * agent, Vector2D target, Vector2D targetVelocity, float dtime)
 {
 	float MaxLookAheadTime = 3;								//PER RETOCAR

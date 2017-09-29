@@ -12,7 +12,7 @@ SceneEvade::SceneEvade()
 	target = Vector2D(640, 360);
 
 	Agent *zombie = new Agent;
-	zombie->setPosition(Vector2D(540, 360));
+	zombie->setPosition(Vector2D(90, 90));
 	zombie->setTarget(Vector2D(120,120));
 	zombie->loadSpriteTexture("../res/zombie1.png", 8);
 	zombies.push_back(zombie);
@@ -45,8 +45,8 @@ void SceneEvade::update(float dtime, SDL_Event *event)
 	}
 	Vector2D steering_force = agents[0]->Behavior()->Arrive(agents[0], agents[0]->getTarget(), 325, dtime);
 	agents[0]->update(steering_force, dtime, event);
-	Vector2D Evade_force= zombies[0]->Behavior()->Evade(zombies[0], zombies[0]->getTarget(), 325, dtime);;
-	zombies[0]->update(steering_force, dtime, event);
+	Vector2D Evade_force= zombies[0]->Behavior()->Evade(agents[0], zombies[0], dtime);
+	zombies[0]->update(Evade_force, dtime, event);
 }
 
 void SceneEvade::draw()
