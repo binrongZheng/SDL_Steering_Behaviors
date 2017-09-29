@@ -10,6 +10,7 @@ SceneSeekPursue::SceneSeekPursue()
 	agent->setColor(0,0,255,255);
 	agent->loadSpriteTexture("../res/zombie1.png", 8);
 	agents.push_back(agent);
+
 	agent = new Agent();
 	agent->setPosition(Vector2D(600,50));
 	agent->setTarget(Vector2D(900, 650));
@@ -43,9 +44,9 @@ void SceneSeekPursue::update(float dtime, SDL_Event *event)
 	}
 
 	agents[0]->setTarget(agents[1]->getPosition());
-	Vector2D steering_force = agents[1]->Behavior()->Arrive(agents[1], agents[1]->getTarget(), 200, dtime);
+	Vector2D steering_force = agents[1]->Behavior()->KinematicSeek(agents[1], agents[1]->getTarget(), dtime);
 	agents[1]->update(steering_force, dtime, event);
-	steering_force = agents[0]->Behavior()->Pursue(agents[0], agents[1], dtime);
+	steering_force = agents[0]->Behavior()->Evade(agents[0], agents[1], dtime);
 	agents[0]->update(steering_force, dtime, event);
 }
 

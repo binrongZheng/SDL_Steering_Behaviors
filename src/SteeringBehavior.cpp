@@ -138,8 +138,9 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 
 	Vector2D futurePosition = agent->position + agent->velocity*T;
 
-	return Flee(zombie, futurePosition, dtime);
+	return Seek(zombie, futurePosition, dtime);
 }
+
 Vector2D SteeringBehavior::Pursue(Agent * agent, Vector2D target, Vector2D targetVelocity, float dtime)
 {
 	float MaxLookAheadTime = 18;								//PER RETOCAR

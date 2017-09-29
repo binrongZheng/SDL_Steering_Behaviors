@@ -144,6 +144,7 @@
     <ClCompile Include="..\src\SceneKinematicSeek .cpp" />
     <ClCompile Include="..\src\ScenePursue.cpp" />
     <ClCompile Include="..\src\SceneSeek.cpp" />
+    <ClCompile Include="..\src\SceneSeekPursue.cpp" />
     <ClCompile Include="..\src\SceneWander.cpp" />
     <ClCompile Include="..\src\SDL_SimpleApp.cpp" />
     <ClCompile Include="..\src\SteeringBehavior.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="..\src\SceneKinematicSeek.h" />
     <ClInclude Include="..\src\ScenePursue.h" />
     <ClInclude Include="..\src\SceneSeek.h" />
+    <ClInclude Include="..\src\SceneSeekPursue.h" />
     <ClInclude Include="..\src\SceneWander.h" />
     <ClInclude Include="..\src\SteeringBehavior.h" />
     <ClInclude Include="..\src\utils.h" />
