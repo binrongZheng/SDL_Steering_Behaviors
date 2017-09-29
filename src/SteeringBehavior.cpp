@@ -109,24 +109,25 @@ Vector2D SteeringBehavior::Arrive(Agent *agent, Agent *target, float dtime,float
 	return Arrive(agent, target->position, dtime, radiArea);
 }
 
-Vector2D SteeringBehavior::Wander(Agent *agent, float angle, float wanderAngle, int wanderMaxAngle, float  wanderCircleOffset, float wanderCircleRadius,float dtime)
+Vector2D SteeringBehavior::Wander(Agent *agent, float* wanderAngle, int wanderMaxAngle, float  wanderCircleOffset, float wanderCircleRadius,float dtime)
 {
+	//if (abs(agent->position.x - newTarget->x) < 0.1 && abs(agent->position.y - newTarget->y) < 0.1) { //cada vegada que arrivem a la posicio que voliem calculem nou target
+																						
+		srand(time(NULL));
+		*wanderAngle = (-wanderMaxAngle + rand() % (wanderMaxAngle * 2));
+			
+		//calculem centre del cercle
+		Vector2D circleCenter = agent->position + Vector2D::Normalize(agent->velocity) * wanderCircleOffset;
+		draw_circle(TheApp::Instance()->getRenderer(), (int)circleCenter.x, (int)circleCenter.y, wanderCircleRadius, 0, 150, 0, 255);
+
+		//calculem el punt del cercle on volem anar	
+		Vector2D newTarget;
+		newTarget.x = circleCenter.x + wanderCircleRadius*cosf(*wanderAngle * DEG2RAD);
+		newTarget.y = circleCenter.y + wanderCircleRadius*sinf(*wanderAngle * DEG2RAD);
+		draw_circle(TheApp::Instance()->getRenderer(), (int)newTarget.x, (int)newTarget.y, 15, 255, 0, 0, 255);
+	//}
 	
-	//calculem angle de gir
-	srand(time(NULL));
-	wanderAngle += -wanderMaxAngle + rand() % (wanderMaxAngle *2);
-	float targetAngle = 30;
-	
-	//calculem centre del cercle
-	Vector2D circleCenter = agent->position + agent->velocity.Normalize() * wanderCircleOffset;
-	
-	//calculem el punt del cercle on volem anar	
-	Vector2D target;
-	target.x = circleCenter.x + wanderCircleRadius*cos(targetAngle * DEG2RAD);
-	target.y = circleCenter.y + wanderCircleRadius*sin(targetAngle * DEG2RAD);
-	
-		
-	return Seek(agent, target, dtime);
+	return Seek(agent, newTarget, dtime);
 }
 
 
