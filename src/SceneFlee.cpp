@@ -42,6 +42,7 @@ void SceneFlee::update(float dtime, SDL_Event *event)
 void SceneFlee::draw()
 {
 	draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 15, 255, 0, 0, 255);
+	
 	agents[0]->draw();
 }
 
