@@ -42,6 +42,8 @@ void SceneArrival::update(float dtime, SDL_Event *event)
 void SceneArrival::draw()
 {
 	draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 15, 255, 0, 0, 255);
+	draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 325, 0, 0, 255, 255);
+	
 	agents[0]->draw();
 }
 
