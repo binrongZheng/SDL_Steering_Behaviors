@@ -114,7 +114,7 @@ Vector2D SteeringBehavior::Wander(Agent *agent, float* wanderAngle, int wanderMa
 	//if (abs(agent->position.x - newTarget->x) < 0.1 && abs(agent->position.y - newTarget->y) < 0.1) { //cada vegada que arrivem a la posicio que voliem calculem nou target
 																						
 		srand(time(NULL));
-		*wanderAngle = (-wanderMaxAngle + rand() % (wanderMaxAngle * 2));
+		*wanderAngle = 5/*(-wanderMaxAngle + rand() % (wanderMaxAngle * 2))*/;
 			
 		//calculem centre del cercle
 		Vector2D circleCenter = agent->position + Vector2D::Normalize(agent->velocity) * wanderCircleOffset;

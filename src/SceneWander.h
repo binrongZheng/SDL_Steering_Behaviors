@@ -21,7 +21,7 @@ public:
 	int maxWanderAngle = 50;
 	int wanderCircleOffset = 150;
 	int wanderCircleRadius = 250;
-	float* wanderAngle;
+	float* wanderAngle = new float;
 	Vector2D wanderCircleCenter = {};
 	Vector2D wanderDisplacementVector = {};
 	
