@@ -109,24 +109,22 @@ Vector2D SteeringBehavior::Arrive(Agent *agent, Agent *target, float dtime,float
 	return Arrive(agent, target->position, dtime, radiArea);
 }
 
-Vector2D SteeringBehavior::Wander(Agent *agent, float* wanderAngle, int wanderMaxAngle, float  wanderCircleOffset, float wanderCircleRadius,float dtime)
+Vector2D SteeringBehavior::Wander(Agent *agent, float WanderMaxAngleChange, float  wanderCircleOffset, float wanderCircleRadius,float dtime)
 {
-	//if (abs(agent->position.x - newTarget->x) < 0.1 && abs(agent->position.y - newTarget->y) < 0.1) { //cada vegada que arrivem a la posicio que voliem calculem nou target
-																						
-		srand(time(NULL));
-		*wanderAngle = 5/*(-wanderMaxAngle + rand() % (wanderMaxAngle * 2))*/;
+																							
+	srand(time(NULL));
+	float wA = WanderMaxAngleChange*RandomBinomial();
 			
-		//calculem centre del cercle
-		Vector2D circleCenter = agent->position + Vector2D::Normalize(agent->velocity) * wanderCircleOffset;
-		draw_circle(TheApp::Instance()->getRenderer(), (int)circleCenter.x, (int)circleCenter.y, wanderCircleRadius, 0, 150, 0, 255);
+	//calculem centre del cercle
+	Vector2D circleCenter = agent->position + Vector2D::Normalize(agent->velocity) * wanderCircleOffset;
+	draw_circle(TheApp::Instance()->getRenderer(), (int)circleCenter.x, (int)circleCenter.y, wanderCircleRadius, 0, 150, 0, 255);
 
-		//calculem el punt del cercle on volem anar	
-		Vector2D newTarget;
-		newTarget.x = circleCenter.x + wanderCircleRadius*cosf(*wanderAngle * DEG2RAD);
-		newTarget.y = circleCenter.y + wanderCircleRadius*sinf(*wanderAngle * DEG2RAD);
-		draw_circle(TheApp::Instance()->getRenderer(), (int)newTarget.x, (int)newTarget.y, 15, 255, 0, 0, 255);
-	//}
-	
+	//calculem el punt del cercle on volem anar	
+	Vector2D newTarget;
+	newTarget.x = circleCenter.x + wanderCircleRadius*cosf(wA * DEG2RAD);
+	newTarget.y = circleCenter.y + wanderCircleRadius*sinf(wA * DEG2RAD);
+	draw_circle(TheApp::Instance()->getRenderer(), (int)newTarget.x, (int)newTarget.y, 15, 255, 0, 0, 255);
+		
 	return Seek(agent, newTarget, dtime);
 }
 
@@ -160,4 +158,9 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, Vector2D target
 {
 
 	return Vector2D();
+}
+float SteeringBehavior::RandomBinomial()
+{
+	return ((float)rand() / (RAND_MAX))
+		- ((float)rand() / (RAND_MAX));
 }
