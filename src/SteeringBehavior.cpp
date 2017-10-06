@@ -161,3 +161,5 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, Vector2D target
 
 	return Vector2D();
 }
+
+

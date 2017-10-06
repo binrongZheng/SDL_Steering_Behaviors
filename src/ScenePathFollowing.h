@@ -3,17 +3,22 @@
 #include "Scene.h"
 #include "Agent.h"
 
-class SceneEvade :
+struct Path { Vector2D pathArray[5]; };
+
+class ScenePathFollowing :
 	public Scene
 {
 public:
-	SceneEvade();
-	~SceneEvade();
+	ScenePathFollowing();
+	~ScenePathFollowing();
+	
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	const char* getTitle();
+
 private:
 	std::vector<Agent*> agents;
 	Vector2D target;
+	Path pas;
 };
 
