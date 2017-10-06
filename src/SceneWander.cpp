@@ -12,10 +12,9 @@ SceneWander::SceneWander()
 	agents.push_back(agent);
 	
 	
-	maxWanderAngle = 120;
+	WanderMaxAngleChange = 60;
 	wanderCircleOffset = 350;
 	wanderCircleRadius = 130;
-	*wanderAngle = 0.0f;
 	wanderCircleCenter = {};
 	wanderDisplacementVector = {};
 	target = Vector2D(640, 360);
@@ -32,7 +31,7 @@ SceneWander::~SceneWander()
 void SceneWander::update(float dtime, SDL_Event *event)
 {
 	
-	Vector2D steering_force = agents[0]->Behavior()->Wander(agents[0], wanderAngle, maxWanderAngle, wanderCircleOffset, wanderCircleRadius, dtime);
+	Vector2D steering_force = agents[0]->Behavior()->Wander(agents[0], WanderMaxAngleChange, wanderCircleOffset, wanderCircleRadius, dtime);
 	agents[0]->update(steering_force, dtime, event);
 }
 
