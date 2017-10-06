@@ -18,10 +18,9 @@ private:
 	
 public:
 	// Wander fields
-	int maxWanderAngle = 50;
-	int wanderCircleOffset = 150;
-	int wanderCircleRadius = 250;
-	float* wanderAngle;
+	float WanderMaxAngleChange;
+	int wanderCircleOffset;
+	int wanderCircleRadius;
 	Vector2D wanderCircleCenter = {};
 	Vector2D wanderDisplacementVector = {};
 	
