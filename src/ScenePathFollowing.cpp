@@ -1,6 +1,8 @@
 #include "ScenePathFollowing.h"
 
 using namespace std;
+class agent;
+Path pas;
 
 ScenePathFollowing::ScenePathFollowing()
 {
@@ -10,7 +12,7 @@ ScenePathFollowing::ScenePathFollowing()
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agents.push_back(agent);
 	target = Vector2D(640, 360);
-	pas.pathArray[0] = Vector2D(100, 150); pas.pathArray[1] = Vector2D(200,200); pas.pathArray[2] = Vector2D(300,400); pas.pathArray[3] = Vector2D(400, 400); pas.pathArray[4] = Vector2D(500, 500);
+	pas.pathArray[0] = Vector2D(100, 150); pas.pathArray[1] = Vector2D(200, 200); pas.pathArray[2] = Vector2D(300, 400); pas.pathArray[3] = Vector2D(400, 400); pas.pathArray[4] = Vector2D(500, 500);
 }
 
 ScenePathFollowing::~ScenePathFollowing()
@@ -27,38 +29,13 @@ void ScenePathFollowing::update(float dtime, SDL_Event *event)
 	switch (event->type) {
 	case SDL_MOUSEMOTION:
 	case SDL_MOUSEBUTTONDOWN:
-		if (event->button.button == SDL_BUTTON_LEFT)
-		{
-			for (int i = 2; i < 4; i++) {
-//				Vector2D tmp = pas.pathArray[i-1];
-	//			pas.pathArray[i-2] = tmp;
-		//		tmp = pas.pathArray[i];
-			}
-			
-
-
-//			pas.pathArray[4]= Vector2D((float)(event->button.x), (float)(event->button.y));
-
-			
-
-			
-		}
+		if (event->button.button == SDL_BUTTON_LEFT){		}
 		break;
 	default:
 		break;
 	}
-	while(agents[0]->currentTargetIndex<5){
-		Vector2D pos = agents[0]->getPosition;
-		if (pos == pas.pathArray[agents[0]->currentTargetIndex]) {
-			agents[0]->currentTargetIndex++;
-		}
-		else{
-			target = pas.pathArray[agents[0]->currentTargetIndex];
-			agents[0]->setTarget(target);
-		}
-	}
-	//agents[0]->currentTargetIndex++;
-	Vector2D steering_force = agents[0]->Behavior()->Seek(agents[0], agents[0]->getTarget(), dtime);
+
+	Vector2D steering_force = agents[0]->Behavior()->PathFollow(agents[0], pas, dtime);
 	agents[0]->update(steering_force, dtime, event);
 }
 
@@ -69,7 +46,6 @@ void ScenePathFollowing::draw()
 		draw_circle(TheApp::Instance()->getRenderer(), (int)pas.pathArray[i-1].x, (int)pas.pathArray[i-1].y, 15, 200, 200, 0, 255);
 		if(i!=5)		SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), (int)pas.pathArray[i].x, (int)pas.pathArray[i].y, (int)pas.pathArray[i-1].x, (int)pas.pathArray[i-1].y);
 	}
-//	draw_circle(TheApp::Instance()->getRenderer(), (int)pas.pathArray[0].x, (int)pas.pathArray[0].y, 15, 200, 200, 0, 255);
 	agents[0]->draw();
 }
 

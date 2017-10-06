@@ -164,3 +164,17 @@ float SteeringBehavior::RandomBinomial()
 	return ((float)rand() / (RAND_MAX))
 		- ((float)rand() / (RAND_MAX));
 }
+
+Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
+{
+	Vector2D predictedTarget;
+	
+	while(agent->currentTargetIndex<5){
+		if (abs((agent->position - p.pathArray[agent->currentTargetIndex]).Length())<20&& agent->currentTargetIndex!=4) {
+			agent->currentTargetIndex++;
+		}
+		return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
+
+	}
+	
+}

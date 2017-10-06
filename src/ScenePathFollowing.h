@@ -3,7 +3,6 @@
 #include "Scene.h"
 #include "Agent.h"
 
-struct Path { Vector2D pathArray[5]; };
 
 class ScenePathFollowing :
 	public Scene
@@ -19,6 +18,5 @@ public:
 private:
 	std::vector<Agent*> agents;
 	Vector2D target;
-	Path pas;
 };
 

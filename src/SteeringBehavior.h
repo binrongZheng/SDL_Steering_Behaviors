@@ -3,9 +3,12 @@
 #include "Vector2D.h"
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <stdio.h>
 using namespace std;
 
 class Agent;
+struct Path;
 
 class SteeringBehavior
 {
@@ -29,5 +32,7 @@ public:
 	Vector2D Evade(Agent *agent, Agent *zombie, float dtime);
 	Vector2D Pursue(Agent *agent, Vector2D target, Vector2D targetVelocity, float dtime);
 	Vector2D Pursue(Agent *agent, Agent* target, Vector2D targetVelocity, float dtime);
+	Vector2D PathFollow(Agent *agent, Path p, float dtime);
+
 	float RandomBinomial();
 };

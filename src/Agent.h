@@ -8,16 +8,20 @@
 #include "utils.h"
 #include "SteeringBehavior.h"
 
+struct Path { Vector2D pathArray[5]; };
 
 class Agent
 {
 	friend class SteeringBehavior;
+	friend struct Path;
 
 private:
 	SteeringBehavior *steering_behavior;
 	Vector2D position;
 	Vector2D velocity;
 	Vector2D target;
+	
+
 
 	float mass;
 	float orientation;
