@@ -35,4 +35,5 @@ public:
 	Vector2D PathFollow(Agent *agent, Path p, float dtime);
 
 	float RandomBinomial();
+	Vector2D Pursue(Agent *agent, Agent* target, float dtime);
 };
