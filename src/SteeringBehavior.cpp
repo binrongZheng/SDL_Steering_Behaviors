@@ -144,20 +144,38 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 
 Vector2D SteeringBehavior::Pursue(Agent * agent, Vector2D target, Vector2D targetVelocity, float dtime)
 {
-	float MaxLookAheadTime = 18;								//PER RETOCAR
+	/*float MaxLookAheadTime = 18;
 
-	Vector2D dv = target - agent->position;					//distance vector
+	Vector2D dv = target - agent->position;
 	float distance = sqrt(dv.x*dv.x + dv.y*dv.y);
-	float velocity = sqrt(agent->velocity.x*agent->velocity.x+ agent->velocity.y*agent->velocity.y);
-	float time = distance / velocity;						//temps que trigarà el target a arrivar al predictedTarget
+	float velocity = sqrt(targetVelocity.x*targetVelocity.x + targetVelocity.y*targetVelocity.y);
+	float time = distance / velocity;
 	if (time > MaxLookAheadTime)
 		time = MaxLookAheadTime;
 	Vector2D predictedTarget = target + targetVelocity * time;
-	return Seek(agent, predictedTarget, dtime);
+
+
+	return Seek(agent, predictedTarget, dtime);*/
+	return Vector2D();
 }
 
-Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, Vector2D targetVelocity, float dtime)
-{
+Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
+{								//agent -> zombie, target -> objectiu / humà
+	Vector2D distance = target->position - agent->position;
+	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
+	float T = Ndistance / target->max_velocity;
+
+	float MaxLookAheadTime = 3;
+	if (T > MaxLookAheadTime) {
+		T = MaxLookAheadTime;
+	}
+
+	Vector2D futurePosition = target->position + target->velocity*T;
+	
+	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 0, 0, 255);
+	
+
+	return Seek(agent, futurePosition, dtime);
 
 	return Vector2D();
 }

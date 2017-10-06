@@ -28,5 +28,5 @@ public:
 	Vector2D Wander(Agent *agent, float *wanderAngle, int wanderMaxAngle, float  wanderCircleOffset, float wanderCircleRadius, float dtime);	
 	Vector2D Evade(Agent *agent, Agent *zombie, float dtime);
 	Vector2D Pursue(Agent *agent, Vector2D target, Vector2D targetVelocity, float dtime);
-	Vector2D Pursue(Agent *agent, Agent* target, Vector2D targetVelocity, float dtime);
+	Vector2D Pursue(Agent *agent, Agent* target, float dtime);
 };
