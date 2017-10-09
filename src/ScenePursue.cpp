@@ -14,6 +14,7 @@ ScenePursue::ScenePursue()
 	Agent *zombie = new Agent;
 	zombie->setPosition(Vector2D(90, 90));
 	zombie->setTarget(Vector2D(120,120));
+	zombie->setColor(0, 0, 255, 255);
 	zombie->loadSpriteTexture("../res/zombie1.png", 8);
 	zombies.push_back(zombie);
 	
