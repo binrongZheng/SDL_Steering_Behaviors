@@ -14,6 +14,7 @@ ScenePursue::ScenePursue()
 	Agent *zombie = new Agent;
 	zombie->setPosition(Vector2D(90, 90));
 	zombie->setTarget(Vector2D(120,120));
+	zombie->setColor(0, 0, 255, 255);
 	zombie->loadSpriteTexture("../res/zombie1.png", 8);
 	zombies.push_back(zombie);
 	
@@ -43,12 +44,11 @@ void ScenePursue::update(float dtime, SDL_Event *event)
 	default:
 		break;
 	}
-//	Vector2D steering_force = agents[0]->Behavior()->Arrive(agents[0], agents[0]->getTarget(), 325, dtime);
+
 	Vector2D steering_force = agents[0]->Behavior()->Seek(agents[0], agents[0]->getTarget(), dtime);
 	agents[0]->update(steering_force, dtime, event);
 	Vector2D Pursue_force = zombies[0]->Behavior()->Pursue(zombies[0], agents[0],  dtime);
-	//Vector2D Pursue_force = zombies[0]->Behavior()->Seek(zombies[0], target, dtime);
-	
+		
 	zombies[0]->update(Pursue_force, dtime, event);
 }
 

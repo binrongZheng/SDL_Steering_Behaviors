@@ -25,30 +25,20 @@ ScenePathFollowing::~ScenePathFollowing()
 
 void ScenePathFollowing::update(float dtime, SDL_Event *event)
 {
-	/* Keyboard & Mouse events */
-	/*switch (event->type) {
-	case SDL_MOUSEMOTION:
-	case SDL_MOUSEBUTTONDOWN:
-		if (event->button.button == SDL_BUTTON_LEFT){		}
-		break;
-	default:
-		break;
-	}*/
-
+	
 	Vector2D steering_force = agents[0]->Behavior()->PathFollow(agents[0], pas, dtime);
 	agents[0]->update(steering_force, dtime, event);
 }
 
 void ScenePathFollowing::draw()
 {
-	//draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 15, 255, 0, 0, 255);
 	for (int i = 1; i < 6;i++) {
 		draw_circle(TheApp::Instance()->getRenderer(), (int)pas.pathArray[i-1].x, (int)pas.pathArray[i-1].y, 15, 200, 200, 0, 255);
 		if(i!=5)		SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), (int)pas.pathArray[i].x, (int)pas.pathArray[i].y, (int)pas.pathArray[i-1].x, (int)pas.pathArray[i-1].y);
 	}
 	agents[0]->draw();
 }
-//sdjksfjdlsfj
+
 const char* ScenePathFollowing::getTitle()
 {
 	return "SDL Steering Behaviors :: Seek Demo";

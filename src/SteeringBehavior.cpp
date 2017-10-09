@@ -1,4 +1,6 @@
 #include "SteeringBehavior.h"
+#include <time.h>
+#include <vector>
 
 SteeringBehavior::SteeringBehavior()
 {
@@ -116,19 +118,8 @@ Vector2D SteeringBehavior::Wander(Agent *agent, float WanderMaxAngleChange, floa
 	return Seek(agent, newTarget, dtime);
 }
 
-
-Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
-{
-	Vector2D distance = agent->position - zombie->position;
-	float Ndistance=sqrt(distance.x*distance.x+distance.y*distance.y);
-	float T = Ndistance / agent->max_velocity;
-
-	Vector2D futurePosition = agent->position + agent->velocity*T;
-
-	return Flee(zombie, futurePosition, dtime);
-}
 Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
-{								//agent -> zombie, target -> objectiu / humà
+{	//agent -> zombie, target -> objectiu / humà
 	Vector2D distance = target->position - agent->position;
 	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
 	float T = Ndistance / target->max_velocity;
@@ -144,9 +135,20 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 	
 
 	return Seek(agent, futurePosition, dtime);
-
-	return Vector2D();
 }
+
+
+Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
+{
+	Vector2D distance = agent->position - zombie->position;
+	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
+	float T = Ndistance / agent->max_velocity;
+
+	Vector2D futurePosition = agent->position + agent->velocity*T;
+
+	return Flee(zombie, futurePosition, dtime);
+}
+
 float SteeringBehavior::RandomBinomial()
 {
 	return ((float)rand() / (RAND_MAX))
@@ -161,8 +163,44 @@ Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
 			agent->currentTargetIndex++;			
 		}	
 		return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
+
 	}
-	return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
 	
-	
+}
+
+
+Vector2D SteeringBehavior::AvoidCollision(Agent * agent, std::vector<Agent*> agents, float dtime)	//agents-> tots els enemics
+//Vector2D SteeringBehavior::AvoidCollision(Agent * agent, float dtime)	//agents-> tots els enemics
+{
+	float shortestDistance = 1000;
+	float coneHalfAngle = 40;
+	float coneHeight = 100;
+	Agent nearestAgent = Agent();	//guarrada... pero sino no puc fer el return
+	Vector2D coneBase = agent->position+Vector2D::Normalize(agent->velocity)*coneHeight;
+	bool collisionDetected = false;
+
+	Vector2D finalForce;
+
+	for (std::vector<Agent*>::iterator it = agents.begin(); it != agents.end(); ++it) {
+		
+		float currDist = Vector2D::Distance(agent->position, (*it)->position);
+		if (Vector2DUtils::IsInsideCone((*it)->position, agent->position, coneBase, coneHalfAngle)) {
+			if (currDist < shortestDistance) {
+				nearestAgent = *(*it);
+				shortestDistance = currDist;
+				collisionDetected = true;
+				draw_circle(TheApp::Instance()->getRenderer(), 500, 400, 15, 255, 0, 0, 255);
+			}
+		}
+	}
+	if (collisionDetected) {
+		return Flee(agent, nearestAgent.position, dtime);
+	}
+	else {
+		return Seek(agent, agent->getTarget(), dtime);
+	}
+
+	//return Seek(agent, agent->getTarget(), dtime);
+
+
 }
