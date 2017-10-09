@@ -38,16 +38,6 @@ Vector2D SteeringBehavior::KinematicFlee(Agent *agent, Agent *target, float dtim
 
 
 /* Add here your own Steering Behavior functions definitions */
-/*
-
-
-Vector2D SteeringBehavior::Seek(Agent *agent, Vector2D target, float dtime)
-{
-	return Vector2D(0, 0);
-
-}
-*/
-
 Vector2D SteeringBehavior::Seek(Agent *agent, Vector2D target, float dtime)
 {
 	Vector2D dv = target - agent->position;
@@ -139,24 +129,6 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 
 	return Flee(zombie, futurePosition, dtime);
 }
-
-Vector2D SteeringBehavior::Pursue(Agent * agent, Vector2D target, Vector2D targetVelocity, float dtime)
-{
-	/*float MaxLookAheadTime = 18;
-
-	Vector2D dv = target - agent->position;
-	float distance = sqrt(dv.x*dv.x + dv.y*dv.y);
-	float velocity = sqrt(targetVelocity.x*targetVelocity.x + targetVelocity.y*targetVelocity.y);
-	float time = distance / velocity;
-	if (time > MaxLookAheadTime)
-		time = MaxLookAheadTime;
-	Vector2D predictedTarget = target + targetVelocity * time;
-
-
-	return Seek(agent, predictedTarget, dtime);*/
-	return Vector2D();
-}
-
 Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 {								//agent -> zombie, target -> objectiu / humà
 	Vector2D distance = target->position - agent->position;
