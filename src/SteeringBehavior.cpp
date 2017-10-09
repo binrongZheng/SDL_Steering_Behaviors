@@ -118,17 +118,6 @@ Vector2D SteeringBehavior::Wander(Agent *agent, float WanderMaxAngleChange, floa
 	return Seek(agent, newTarget, dtime);
 }
 
-
-Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
-{
-	Vector2D distance = agent->position - zombie->position;
-	float Ndistance=sqrt(distance.x*distance.x+distance.y*distance.y);
-	float T = Ndistance / agent->max_velocity;
-
-	Vector2D futurePosition = agent->position + agent->velocity*T;
-
-	return Flee(zombie, futurePosition, dtime);
-}
 Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 {	//agent -> zombie, target -> objectiu / humà
 	Vector2D distance = target->position - agent->position;
@@ -149,6 +138,19 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 
 	return Vector2D();
 }
+
+
+Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
+{
+	Vector2D distance = agent->position - zombie->position;
+	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
+	float T = Ndistance / agent->max_velocity;
+
+	Vector2D futurePosition = agent->position + agent->velocity*T;
+
+	return Flee(zombie, futurePosition, dtime);
+}
+
 float SteeringBehavior::RandomBinomial()
 {
 	return ((float)rand() / (RAND_MAX))
