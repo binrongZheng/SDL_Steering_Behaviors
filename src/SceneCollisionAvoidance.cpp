@@ -12,10 +12,15 @@ SceneCollisionAvoidance::SceneCollisionAvoidance()
 
 	//enemics
 	Agent *enemy = new Agent;
-	enemy->setPosition(Vector2D(300, 150));
-	enemy->setTarget(Vector2D(640, 360));
+	enemy->setPosition(Vector2D(300, 150));	
 	enemy->loadSpriteTexture("../res/zombie1.png", 8);
 	agents.push_back(enemy);
+
+	enemy = new Agent;
+	enemy->setPosition(Vector2D(350, 250));
+	enemy->loadSpriteTexture("../res/zombie1.png", 8);
+	agents.push_back(enemy);
+
 	target = Vector2D(640, 360);
 }
 
