@@ -131,7 +131,7 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 
 	Vector2D futurePosition = target->position + target->velocity*T;
 	
-	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 0, 0, 255);
+	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 200, 0, 255);
 	
 
 	return Seek(agent, futurePosition, dtime);
@@ -144,7 +144,13 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
 	float T = Ndistance / agent->max_velocity;
 
+	float MaxLookAheadTime = 3;
+	if (T > MaxLookAheadTime) {
+		T = MaxLookAheadTime;
+	}
 	Vector2D futurePosition = agent->position + agent->velocity*T;
+	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 200, 0, 255);
+
 
 	return Flee(zombie, futurePosition, dtime);
 }
