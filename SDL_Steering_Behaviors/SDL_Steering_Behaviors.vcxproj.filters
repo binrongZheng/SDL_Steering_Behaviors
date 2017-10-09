@@ -60,6 +60,9 @@
     <ClCompile Include="..\src\ScenePathFollowing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SceneCollisionAvoidance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\SceneCombination.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -111,6 +114,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ScenePathFollowing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SceneCollisionAvoidance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SceneCombination.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

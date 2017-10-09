@@ -1,9 +1,11 @@
 #include "SteeringBehavior.h"
-#include <time.h>
+
+
 
 SteeringBehavior::SteeringBehavior()
 {
 }
+
 
 SteeringBehavior::~SteeringBehavior()
 {
@@ -33,13 +35,15 @@ Vector2D SteeringBehavior::KinematicFlee(Agent *agent, Agent *target, float dtim
 	return KinematicFlee(agent, target->position, dtime);
 }
 
+
 /* Add here your own Steering Behavior functions definitions */
 Vector2D SteeringBehavior::Seek(Agent *agent, Vector2D target, float dtime)
 {
-	Vector2D dv = target - agent->position;
-	dv.Normalize();
-	dv *= agent->max_velocity;
-	Vector2D sf = dv - agent->velocity;
+	Vector2D desiredVelocity = target - agent->position;
+	desiredVelocity.Normalize();
+	desiredVelocity *= agent->max_velocity;
+	
+	Vector2D sf = desiredVelocity - agent->velocity;
 	sf /= agent->getMaxVelocity();
 
 	return sf * agent->max_force;
@@ -70,21 +74,21 @@ Vector2D SteeringBehavior::Flee(Agent *agent, Agent *target, float dtime)
 Vector2D SteeringBehavior::Arrive(Agent *agent, Vector2D target, float radiArea, float dtime)
 {
 
-	Vector2D dv = target- agent->position;
+	Vector2D desiredVelocity = target- agent->position;
 	float Factor;
-	float distance = sqrt(dv.x*dv.x+dv.y*dv.y);
+	float distance = sqrt(desiredVelocity.x*desiredVelocity.x+ desiredVelocity.y*desiredVelocity.y);
 	if (distance > radiArea) {
-		dv.Normalize();
-		dv *= agent->max_velocity;
+		desiredVelocity.Normalize();
+		desiredVelocity *= agent->max_velocity;
 	}
 	else{
 		
-		dv.Normalize();
+		desiredVelocity.Normalize();
 		Factor = distance / radiArea;		
-		dv *= agent->max_velocity*Factor;
+		desiredVelocity *= agent->max_velocity*Factor;
 	}
 
-	Vector2D sf = dv - agent->velocity;
+	Vector2D sf = desiredVelocity - agent->velocity;
 	sf /= agent->getMaxVelocity();
 	
 	return sf * agent->max_force;
@@ -127,11 +131,10 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 
 	Vector2D futurePosition = target->position + target->velocity*T;
 	
-	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 200, 0, 255);
+	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 0, 0, 255);
 	
 
 	return Seek(agent, futurePosition, dtime);
-
 }
 
 
@@ -141,14 +144,7 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
 	float T = Ndistance / agent->max_velocity;
 
-	float MaxLookAheadTime = 3;
-	if (T > MaxLookAheadTime) {
-		T = MaxLookAheadTime;
-	}
-
 	Vector2D futurePosition = agent->position + agent->velocity*T;
-
-	draw_circle(TheApp::Instance()->getRenderer(), (int)futurePosition.x, (int)futurePosition.y, 15, 255, 200, 0, 255);
 
 	return Flee(zombie, futurePosition, dtime);
 }
@@ -161,14 +157,53 @@ float SteeringBehavior::RandomBinomial()
 
 Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
 {
-	Vector2D predictedTarget;
-	
-	while(agent->currentTargetIndex<5){
-		if (abs((agent->position - p.pathArray[agent->currentTargetIndex]).Length())<20&& agent->currentTargetIndex!=4) {
-			agent->currentTargetIndex++;
-		}
+		
+	while(agent->currentTargetIndex<4){
+		if (abs((agent->position - p.pathArray[agent->currentTargetIndex]).Length())<20) {
+			agent->currentTargetIndex++;			
+		}	
 		return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
-
 	}
+	return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
 	
+}
+
+
+Vector2D SteeringBehavior::AvoidCollision(Agent * agent, std::vector<Agent*> agents, float dtime)	//agents-> tots els enemics
+//Vector2D SteeringBehavior::AvoidCollision(Agent * agent, float dtime)	//agents-> tots els enemics
+{
+	float shortestDistance = 150;
+	float coneHalfAngle = 40;
+	float coneHeight = 500;
+	Agent* nearestAgent = new Agent();	//guarrada... pero sino no puc fer el return
+	Vector2D coneBase = agent->position+Vector2D::Normalize(agent->velocity)*coneHeight;
+	bool collisionDetected = false;
+
+	Vector2D finalForce;
+	
+	SDL_SetRenderDrawColor(TheApp::Instance()->getRenderer(), 0, 255, 0, 255);
+	SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), (int)agent->position.x, (int)agent->position.y, (int)coneBase.x, (int)coneBase.y);
+
+	for (std::vector<Agent*>::iterator it = agents.begin(); it != agents.end(); ++it) {	
+		
+		float currDist = Vector2D::Distance(agent->position, (*it)->position);
+		if (Vector2DUtils::IsInsideCone((*it)->position, agent->position, coneBase, coneHalfAngle)) {
+			if (currDist < shortestDistance) {
+				nearestAgent = (*it);				
+				shortestDistance = currDist; // per triar el que està més a prop
+				collisionDetected = true;				
+			}
+			
+		}
+	}
+	if (collisionDetected) {
+		return Flee(agent, nearestAgent->position, dtime)*5 + Seek(agent, agent->getTarget(), dtime);
+	}
+	else {
+		return Seek(agent, agent->getTarget(), dtime);
+	}
+
+	//return Seek(agent, agent->getTarget(), dtime);
+
+
 }

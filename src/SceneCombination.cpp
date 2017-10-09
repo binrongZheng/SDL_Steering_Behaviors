@@ -12,7 +12,7 @@ SceneCombination::SceneCombination()
 	agents.push_back(agent);
 		
 	target = Vector2D(640, 360);
-	p.pathArray[0] = Vector2D(100, 150); p.pathArray[1] = Vector2D(200, 200); p.pathArray[2] = Vector2D(300, 400); p.pathArray[3] = Vector2D(400, 400); p.pathArray[4] = Vector2D(500, 500);
+	p.pathArray[0] = Vector2D(100, 150); p.pathArray[1] = Vector2D(400, 400); p.pathArray[2] = Vector2D(400, 550); p.pathArray[3] = Vector2D(300, 700); p.pathArray[4] = Vector2D(1200, 500);
 }
 
 SceneCombination::~SceneCombination()
@@ -27,15 +27,22 @@ void SceneCombination::update(float dtime, SDL_Event *event)
 {
 	
 	Vector2D steering_force1 = agents[0]->Behavior()->PathFollow(agents[0], p, dtime);
-	agents[0]->update(steering_force1, dtime, event);
+	Vector2D steering_force2 = agents[0]->Behavior()->Arrive(agents[0], p.pathArray[agents[0]->currentTargetIndex], 250, dtime);
+	//fem un weighted blending
+	agents[0]->update(steering_force1*0.25 + steering_force2, dtime, event); //igualment gira pq el arrive ja et mou cap al punt tmb.
 }
 
 void SceneCombination::draw()
 {
+	//Pintem path
 	for (int i = 1; i < 6; i++) {
 		draw_circle(TheApp::Instance()->getRenderer(), (int)p.pathArray[i - 1].x, (int)p.pathArray[i - 1].y, 15, 200, 200, 0, 255);
 		if (i != 5)		SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), (int)p.pathArray[i].x, (int)p.pathArray[i].y, (int)p.pathArray[i - 1].x, (int)p.pathArray[i - 1].y);
 	}
+	//Pintem cercle de arrive
+	draw_circle(TheApp::Instance()->getRenderer(), (int)p.pathArray[agents[0]->currentTargetIndex].x, (int)p.pathArray[agents[0]->currentTargetIndex].y, 250, 0, 0, 255, 255);
+	
+	//pintem el personatge
 	agents[0]->draw();
 }
 
