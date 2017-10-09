@@ -12,6 +12,7 @@
 #include "ScenePursue.h"
 #include "SceneEvade.h"
 #include "ScenePathFollowing.h"
+#include "SceneCombination.h"
 #include "SceneCollisionAvoidance.h"
 
 using namespace std;
@@ -104,6 +105,14 @@ int main(int argc, char ** argv)
 
 			}
 			
+			if (event.key.keysym.scancode == SDL_SCANCODE_F2)
+			{
+				delete(curr_scene);
+				curr_scene = new SceneCombination;
+				app->setWindowTitle(curr_scene->getTitle());
+
+			}
+
 			if ((event.key.keysym.scancode == SDL_SCANCODE_Q) || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
 			{
 				quit = true;
