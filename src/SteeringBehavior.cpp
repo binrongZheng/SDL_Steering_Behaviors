@@ -1,7 +1,4 @@
 #include "SteeringBehavior.h"
-#include <time.h>
-
-
 
 SteeringBehavior::SteeringBehavior()
 {
@@ -40,10 +37,11 @@ Vector2D SteeringBehavior::KinematicFlee(Agent *agent, Agent *target, float dtim
 /* Add here your own Steering Behavior functions definitions */
 Vector2D SteeringBehavior::Seek(Agent *agent, Vector2D target, float dtime)
 {
-	Vector2D dv = target - agent->position;
-	dv.Normalize();
-	dv *= agent->max_velocity;
-	Vector2D sf = dv - agent->velocity;
+	Vector2D desiredVelocity = target - agent->position;
+	desiredVelocity.Normalize();
+	desiredVelocity *= agent->max_velocity;
+	
+	Vector2D sf = desiredVelocity - agent->velocity;
 	sf /= agent->getMaxVelocity();
 
 	return sf * agent->max_force;
@@ -74,21 +72,21 @@ Vector2D SteeringBehavior::Flee(Agent *agent, Agent *target, float dtime)
 Vector2D SteeringBehavior::Arrive(Agent *agent, Vector2D target, float radiArea, float dtime)
 {
 
-	Vector2D dv = target- agent->position;
+	Vector2D desiredVelocity = target- agent->position;
 	float Factor;
-	float distance = sqrt(dv.x*dv.x+dv.y*dv.y);
+	float distance = sqrt(desiredVelocity.x*desiredVelocity.x+ desiredVelocity.y*desiredVelocity.y);
 	if (distance > radiArea) {
-		dv.Normalize();
-		dv *= agent->max_velocity;
+		desiredVelocity.Normalize();
+		desiredVelocity *= agent->max_velocity;
 	}
 	else{
 		
-		dv.Normalize();
+		desiredVelocity.Normalize();
 		Factor = distance / radiArea;		
-		dv *= agent->max_velocity*Factor;
+		desiredVelocity *= agent->max_velocity*Factor;
 	}
 
-	Vector2D sf = dv - agent->velocity;
+	Vector2D sf = desiredVelocity - agent->velocity;
 	sf /= agent->getMaxVelocity();
 	
 	return sf * agent->max_force;
@@ -157,14 +155,14 @@ float SteeringBehavior::RandomBinomial()
 
 Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
 {
-	Vector2D predictedTarget;
-	
-	while(agent->currentTargetIndex<5){
-		if (abs((agent->position - p.pathArray[agent->currentTargetIndex]).Length())<20&& agent->currentTargetIndex!=4) {
-			agent->currentTargetIndex++;
-		}
+		
+	while(agent->currentTargetIndex<4){
+		if (abs((agent->position - p.pathArray[agent->currentTargetIndex]).Length())<20) {
+			agent->currentTargetIndex++;			
+		}	
 		return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
-
 	}
+	return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
+	
 	
 }
