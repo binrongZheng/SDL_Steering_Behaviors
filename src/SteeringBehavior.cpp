@@ -130,7 +130,7 @@ Vector2D SteeringBehavior::Evade(Agent *agent, Agent *zombie, float dtime)
 	return Flee(zombie, futurePosition, dtime);
 }
 Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
-{								//agent -> zombie, target -> objectiu / humà
+{	//agent -> zombie, target -> objectiu / humà
 	Vector2D distance = target->position - agent->position;
 	float Ndistance = sqrt(distance.x*distance.x + distance.y*distance.y);
 	float T = Ndistance / target->max_velocity;
