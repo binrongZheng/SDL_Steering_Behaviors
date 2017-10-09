@@ -1,7 +1,6 @@
 #include "SteeringBehavior.h"
 #include <time.h>
-
-
+#include <vector>
 
 SteeringBehavior::SteeringBehavior()
 {
@@ -146,9 +145,8 @@ Vector2D SteeringBehavior::Pursue(Agent * agent, Agent * target, float dtime)
 	
 
 	return Seek(agent, futurePosition, dtime);
-
-	return Vector2D();
 }
+
 float SteeringBehavior::RandomBinomial()
 {
 	return ((float)rand() / (RAND_MAX))
@@ -167,4 +165,41 @@ Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
 
 	}
 	
+}
+
+
+Vector2D SteeringBehavior::AvoidCollision(Agent * agent, std::vector<Agent*> agents, float dtime)	//agents-> tots els enemics
+//Vector2D SteeringBehavior::AvoidCollision(Agent * agent, float dtime)	//agents-> tots els enemics
+{
+	float shortestDistance = 1000;
+	float coneHalfAngle = 40;
+	float coneHeight = 100;
+	Agent nearestAgent = Agent();	//guarrada... pero sino no puc fer el return
+	Vector2D coneBase = agent->position+Vector2D::Normalize(agent->velocity)*coneHeight;
+	bool collisionDetected = false;
+
+	Vector2D finalForce;
+
+	for (std::vector<Agent*>::iterator it = agents.begin(); it != agents.end(); ++it) {
+		
+		float currDist = Vector2D::Distance(agent->position, (*it)->position);
+		if (Vector2DUtils::IsInsideCone((*it)->position, agent->position, coneBase, coneHalfAngle)) {
+			if (currDist < shortestDistance) {
+				nearestAgent = *(*it);
+				shortestDistance = currDist;
+				collisionDetected = true;
+				draw_circle(TheApp::Instance()->getRenderer(), 500, 400, 15, 255, 0, 0, 255);
+			}
+		}
+	}
+	if (collisionDetected) {
+		return Flee(agent, nearestAgent.position, dtime);
+	}
+	else {
+		return Seek(agent, agent->getTarget(), dtime);
+	}
+
+	//return Seek(agent, agent->getTarget(), dtime);
+
+
 }

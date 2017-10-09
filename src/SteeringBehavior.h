@@ -5,6 +5,7 @@
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
+#include <vector>
 using namespace std;
 
 class Agent;
@@ -31,6 +32,9 @@ public:
 	Vector2D Evade(Agent *agent, Agent *zombie, float dtime);
 	Vector2D PathFollow(Agent *agent, Path p, float dtime);
 	Vector2D Pursue(Agent *agent, Agent* target, float dtime);
+	Vector2D AvoidCollision(Agent *agent, std::vector<Agent*> agents, float dtime);
+	//Vector2D AvoidCollision(Agent *agent, float dtime);
+
 	float RandomBinomial();
 	
 };
