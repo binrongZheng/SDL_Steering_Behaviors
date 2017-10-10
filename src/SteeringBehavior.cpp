@@ -176,12 +176,11 @@ Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
 
 
 Vector2D SteeringBehavior::AvoidCollision(Agent * agent, std::vector<Agent*> agents, float dtime)	//agents-> tots els enemics
-//Vector2D SteeringBehavior::AvoidCollision(Agent * agent, float dtime)	//agents-> tots els enemics
 {
 	float shortestDistance = 150;
 	float coneHalfAngle = 40;
-	float coneHeight = 500;
-	Agent* nearestAgent = new Agent();	//guarrada... pero sino no puc fer el return
+	float coneHeight = 150;
+	Agent* nearestAgent = new Agent();	
 	Vector2D coneBase = agent->position+Vector2D::Normalize(agent->velocity)*coneHeight;
 	bool collisionDetected = false;
 
