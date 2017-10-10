@@ -14,6 +14,7 @@ public:
 	const char* getTitle();
 private:
 	std::vector<Agent*> agents;
+	std::vector<Agent*> zombies;
 	Vector2D target;
 	
 public:

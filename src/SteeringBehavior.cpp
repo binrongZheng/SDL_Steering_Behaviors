@@ -166,7 +166,8 @@ Vector2D SteeringBehavior::PathFollow(Agent * agent, Path p, float dtime)
 		
 	while(agent->currentTargetIndex<4){
 		if (abs((agent->position - p.pathArray[agent->currentTargetIndex]).Length())<20) {
-			agent->currentTargetIndex++;			
+			agent->currentTargetIndex++;
+			agent->setTarget(p.pathArray[agent->currentTargetIndex]);
 		}	
 		return Seek(agent, p.pathArray[agent->currentTargetIndex], dtime);
 	}
@@ -202,7 +203,7 @@ Vector2D SteeringBehavior::AvoidCollision(Agent * agent, std::vector<Agent*> age
 		}
 	}
 	if (collisionDetected) {
-		return Flee(agent, nearestAgent->position, dtime)/*5 + Seek(agent, agent->getTarget(), dtime)*/;
+		return Flee(agent, nearestAgent->position, dtime);
 	}
 	else {
 		return Seek(agent, agent->getTarget(), dtime);

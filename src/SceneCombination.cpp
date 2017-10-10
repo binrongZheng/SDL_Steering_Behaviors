@@ -6,13 +6,19 @@ SceneCombination::SceneCombination()
 {
 	Agent *agent = new Agent;
 	agent->setPosition(Vector2D(640,360));
-	agent->setTarget(Vector2D(640, 360));
+	agent->setTarget(Vector2D(100, 150));
 	agent->setMass(0.035);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agents.push_back(agent);
-		
+
+	Agent *zombie = new Agent;
+	zombie->setPosition(Vector2D(750, 725));	
+	zombie->setColor(0, 0, 255, 255);
+	zombie->loadSpriteTexture("../res/zombie1.png", 8);
+	zombies.push_back(zombie);
+			
 	target = Vector2D(640, 360);
-	p.pathArray[0] = Vector2D(100, 150); p.pathArray[1] = Vector2D(400, 400); p.pathArray[2] = Vector2D(400, 550); p.pathArray[3] = Vector2D(300, 700); p.pathArray[4] = Vector2D(1200, 500);
+	p.pathArray[0] = Vector2D(100, 150); p.pathArray[1] = Vector2D(400, 400); p.pathArray[2] = Vector2D(400, 550); p.pathArray[3] = Vector2D(300, 700); p.pathArray[4] = Vector2D(1200, 700);
 }
 
 SceneCombination::~SceneCombination()
@@ -28,8 +34,10 @@ void SceneCombination::update(float dtime, SDL_Event *event)
 	
 	Vector2D steering_force1 = agents[0]->Behavior()->PathFollow(agents[0], p, dtime);
 	Vector2D steering_force2 = agents[0]->Behavior()->Arrive(agents[0], p.pathArray[agents[0]->currentTargetIndex], 250, dtime);
+	Vector2D steering_force3 = agents[0]->Behavior()->AvoidCollision(agents[0], zombies, dtime);
 	//fem un weighted blending
-	agents[0]->update(steering_force1*0.25 + steering_force2, dtime, event); //igualment gira pq el arrive ja et mou cap al punt tmb.
+	agents[0]->update(steering_force1*0.25 + steering_force2*3 + steering_force3, dtime, event); //igualment gira pq el arrive ja et mou cap al punt tmb.
+		
 }
 
 void SceneCombination::draw()
@@ -44,9 +52,11 @@ void SceneCombination::draw()
 	
 	//pintem el personatge
 	agents[0]->draw();
+	zombies[0]->draw();
+		
 }
 
 const char* SceneCombination::getTitle()
 {
-	return "SDL Steering Behaviors :: Wander Demo";
+	return "SDL Steering Behaviors :: Combination Demo";
 }
