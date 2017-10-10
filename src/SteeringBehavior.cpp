@@ -203,7 +203,7 @@ Vector2D SteeringBehavior::AvoidCollision(Agent * agent, std::vector<Agent*> age
 		}
 	}
 	if (collisionDetected) {
-		return Flee(agent, nearestAgent->position, dtime)*5 + Seek(agent, agent->getTarget(), dtime);
+		return Flee(agent, nearestAgent->position, dtime)/*5 + Seek(agent, agent->getTarget(), dtime)*/;
 	}
 	else {
 		return Seek(agent, agent->getTarget(), dtime);
